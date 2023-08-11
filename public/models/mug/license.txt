@@ -1,0 +1,11 @@
+Model Information:
+* title:	Mug
+* source:	https://sketchfab.com/3d-models/mug-17c4808537f1448590378b3643c6da72
+* author:	Microsoft (https://sketchfab.com/microsoft)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Mug" (https://sketchfab.com/3d-models/mug-17c4808537f1448590378b3643c6da72) by Microsoft (https://sketchfab.com/microsoft) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

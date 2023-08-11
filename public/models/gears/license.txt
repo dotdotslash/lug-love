@@ -1,0 +1,11 @@
+Model Information:
+* title:	Gears
+* source:	https://sketchfab.com/3d-models/gears-f8e567f4b77346a18a31f3159cba1bdc
+* author:	Microsoft (https://sketchfab.com/microsoft)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Gears" (https://sketchfab.com/3d-models/gears-f8e567f4b77346a18a31f3159cba1bdc) by Microsoft (https://sketchfab.com/microsoft) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

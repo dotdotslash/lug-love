@@ -1,0 +1,212 @@
+{
+  "accessors": [
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 28574,
+      "max": [
+        14.999799728393555,
+        15.590499877929688,
+        20.98870086669922
+      ],
+      "min": [
+        -14.999799728393555,
+        -15.589799880981445,
+        0.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 342888,
+      "componentType": 5126,
+      "count": 28574,
+      "max": [
+        0.9999865293502808,
+        0.999964714050293,
+        1.0
+      ],
+      "min": [
+        -0.999951958656311,
+        -0.9999707937240601,
+        -0.9999558925628662
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 169680,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 685776,
+      "componentType": 5126,
+      "count": 592,
+      "max": [
+        8.586199760437012,
+        14.0,
+        1.9921000003814697
+      ],
+      "min": [
+        -8.586199760437012,
+        -14.0,
+        0.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 692880,
+      "componentType": 5126,
+      "count": 592,
+      "max": [
+        0.09789963811635971,
+        0.005599945783615112,
+        -0.9951962828636169
+      ],
+      "min": [
+        -0.09619636088609695,
+        -0.0175008662045002,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 678720,
+      "componentType": 5125,
+      "count": 1788,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "Microsoft (https://sketchfab.com/microsoft)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/cowboy-hat-8c29ecec368744749d5fa6d7c5521f88",
+      "title": "Cowboy Hat"
+    },
+    "generator": "Sketchfab-12.67.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 685872,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 699984,
+      "byteOffset": 685872,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 1385856,
+      "uri": "scene.bin"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "wire_143225087",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.1646080797,
+          0.0582930887,
+          0.0230914292,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0
+          },
+          "indices": 2,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 4,
+            "POSITION": 3
+          },
+          "indices": 5,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2,
+        3
+      ],
+      "name": "0c16bc4c66024abdb62ef9a4bb794bb0.obj.cleaner"
+    },
+    {
+      "mesh": 0,
+      "name": "Object_2"
+    },
+    {
+      "mesh": 1,
+      "name": "Object_3"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}

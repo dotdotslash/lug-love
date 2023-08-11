@@ -1,0 +1,11 @@
+Model Information:
+* title:	Standard Chair
+* source:	https://sketchfab.com/3d-models/standard-chair-c80c7f9c3e2d4231911b818e5180d902
+* author:	Microsoft (https://sketchfab.com/microsoft)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Standard Chair" (https://sketchfab.com/3d-models/standard-chair-c80c7f9c3e2d4231911b818e5180d902) by Microsoft (https://sketchfab.com/microsoft) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Pineapple
+* source:	https://sketchfab.com/3d-models/pineapple-68558b246dc34452a1a8be5fa2c92e5b
+* author:	Microsoft (https://sketchfab.com/microsoft)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Pineapple" (https://sketchfab.com/3d-models/pineapple-68558b246dc34452a1a8be5fa2c92e5b) by Microsoft (https://sketchfab.com/microsoft) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

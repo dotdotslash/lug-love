@@ -8,17 +8,20 @@ import { Menu, Button } from '@mantine/core'
 import React, { useRef, forwardRef } from 'react'
 import { create } from 'zustand'
 
+
 // GizmoHelper for camera controls
 
 const matrix = new THREE.Matrix4()
 const positions = { Top: [0, 10, 0], Bottom: [0, -10, 0], Left: [-10, 0, 0], Right: [10, 0, 0], Back: [0, 0, -10], Front: [0, 0, 10] }
 const useStore = create((set) => ({
   projection: 'Perspective',
+  modelType: 'Gold',
   top: 'Back',
   middle: 'Top',
   bottom: 'Right',
   setPanelView: (which, view) => set({ [which]: view }),
-  setProjection: (projection) => set({ projection })
+  setProjection: (projection) => set({ projection }),
+  setModelType: (modelType) => set({ modelType })
 }))
 
 export default function SplitView() {
@@ -34,10 +37,6 @@ export default function SplitView() {
   return (
     <div className={styles.splitcontainer} ref={myRoot}>
         <Canvas className={styles.canvas} shadows frameloop="demand" eventSource={myRoot}  >
-            {
-                //  eventSource={document.getElementById('root')} 
-            /** Each view tracks one of the divs above and creates a sandboxed environment that behaves
-                 as if it were a normal everyday canvas, <View> will figure out the gl.scissor stuff alone. */}
             <View index={1} track={view1}>
                 <CameraSwitcher />
                 <PivotControls scale={0.4} depthTest={false} matrix={matrix} />
@@ -49,25 +48,26 @@ export default function SplitView() {
                 <OrbitControls makeDefault />
             </View>
             <View index={2} track={view2}>
-                <PanelCamera which="top" />
+                <OrthoViewCam which="top" />
                 <PivotControls activeAxes={[true, true, false]} depthTest={false} matrix={matrix} />
                 <Scene background="lightpink" matrix={matrix} />
                 <MapControls makeDefault screenSpacePanning enableRotate={false} />
             </View>
             <View index={3} track={view3}>
-                <PanelCamera which="middle" />
+                <OrthoViewCam which="middle" />
                 <PivotControls activeAxes={[true, false, true]} depthTest={false} matrix={matrix} />
                 <Scene background="peachpuff" matrix={matrix} />
                 <MapControls makeDefault screenSpacePanning enableRotate={false} />
             </View>
             <View index={4} track={view4}>
-                <PanelCamera which="bottom" />
+                <OrthoViewCam which="bottom" />
                 <PivotControls activeAxes={[false, true, true]} depthTest={false} matrix={matrix} />
                 <Scene background="skyblue" matrix={matrix} />
                 <MapControls makeDefault screenSpacePanning enableRotate={false} />
             </View>
         </Canvas>
         <MainPanel ref={view1} />
+        <ModelPanel ref={view1} />
         <SidePanel ref={view2} which="top" />
         <SidePanel ref={view3} which="middle" />
         <SidePanel ref={view4} which="bottom" />
@@ -75,8 +75,28 @@ export default function SplitView() {
   )
 }
 
-function Scene({ background = 'white', children, ...props }) {
+function Model() {
   const { nodes, materials } = useGLTF('https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/bricks/model.gltf')
+
+  return (
+    <mesh castShadow geometry={nodes.bricks.geometry} material={materials['Stone.014']} rotation={[Math.PI / 2, 0, 0]}>
+      <meshStandardMaterial color="red" roughness={0} metalness={1} />
+    </mesh>
+  )
+}
+
+function NewModel() {
+  const { nodes, materials } = useGLTF('/models/pineapple/scene.gltf')
+  console.log(nodes)
+
+  return (
+    <mesh castShadow geometry={nodes.Object_4.geometry} material={materials['Stone.014']} scale={[0.1, 0.1, 0.1]} rotation={[Math.PI / 2, 0, 0]}>
+      <meshStandardMaterial color="red" roughness={0} metalness={1} />
+    </mesh>
+  )
+}
+
+function Scene({ background = 'white', children, ...props }) {
   return (
     <>
       <color attach="background" args={[background]} />
@@ -93,13 +113,25 @@ function Scene({ background = 'white', children, ...props }) {
         onUpdate={(self) => (self.matrix = matrix)}
         {...props}>
         <Center>
-          <mesh castShadow geometry={nodes.bricks.geometry} material={materials['Stone.014']} rotation={[Math.PI / 2, 0, 0]}>
-            <meshStandardMaterial color="goldenrod" roughness={0} metalness={1} />
-          </mesh>
+          <Model />
+          <NewModel />
         </Center>
         {children}
       </group>
     </>
+  )
+}
+
+function ModalSwitcher() {
+  const projection = useStore((state) => state.projection)
+  const camera = useRef();
+  useHelper(camera, THREE.CameraHelper, 'cyan');
+
+  // Would need to remember the old coordinates to be more useful ...
+  return projection === 'Perspective' ? (
+    <PerspectiveCamera ref={camera} makeDefault position={[1, 2, 4]} fov={25} />
+  ) : (
+    <OrthographicCamera makeDefault position={[4, 4, 4]} zoom={280} />
   )
 }
 
@@ -116,11 +148,12 @@ function CameraSwitcher() {
   )
 }
 
-function PanelCamera({ which }) {
+function OrthoViewCam({ which }) {
   const view = useStore((state) => state[which]);
-  const panelCamera = useRef();
-  useHelper(panelCamera, THREE.CameraHelper, 1, 'hotpink');
-  return <OrthographicCamera makeDefault position={positions[view]} ref={panelCamera} zoom={100} />
+  const OrthoViewCam = useRef();
+  useHelper(OrthoViewCam, THREE.CameraHelper, 1, 'hotpink');
+  //   return <PerspectiveCamera makeDefault position={positions[view]} fov={25} ref={OrthoViewCam} zoom={50} />
+  return <OrthographicCamera makeDefault position={positions[view]} ref={OrthoViewCam} zoom={100} />
 }
 
 const MainPanel = forwardRef((props, fref) => {
@@ -133,6 +166,24 @@ const MainPanel = forwardRef((props, fref) => {
           <Button>{projection}</Button>
         </Menu.Target>
         <Menu.Dropdown onClick={(e) => setProjection(e.target.innerText)}>
+          <Menu.Item >Perspective</Menu.Item>
+          <Menu.Item >Orthographic</Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
+      </div>
+    )
+  })
+
+  const ModelPanel = forwardRef((props, fref) => {
+    const model = useStore((state) => state.modelType)
+    const setmodelType = useStore((state) => state.setmodelType)
+    return (
+      <div ref={fref} className={styles.panel} style={{ gridArea: 'main' }}>
+        <Menu shadow="md" width={300}>
+        <Menu.Target>
+          <Button>{model}</Button>
+        </Menu.Target>
+        <Menu.Dropdown onClick={(e) => setmodelType(e.target.innerText)}>
           <Menu.Item >Perspective</Menu.Item>
           <Menu.Item >Orthographic</Menu.Item>
         </Menu.Dropdown>
