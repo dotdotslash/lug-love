@@ -30,25 +30,26 @@
 
 ## Phase 2: Archive Page
 
-- [ ] Build `app/routes/archive.tsx` Remix route with loader (server-side fetch from Payload)
-- [ ] Build `ArchiveGrid.tsx` client component with URL-driven filter state (`useSearchParams`)
-- [ ] Build `FilterPanel.tsx`
-  - [ ] Filter by piece types present (multi-select checkboxes)
-  - [ ] Filter by manufacturer (select dropdown)
-  - [ ] Purchasable toggle
-  - [ ] Active year range slider
-- [ ] Build `SearchBar.tsx` with debounced search (300ms)
-- [ ] Build `LugCard.tsx`
-  - [ ] Cover image
-  - [ ] Lug set name
-  - [ ] Manufacturer name
-  - [ ] Piece type indicator icons
-- [ ] Add pagination to archive grid
-- [ ] Mobile responsive layout for archive page
+- [x] Build `app/routes/archive.tsx` Remix route with loader (server-side fetch from Payload)
+- [x] Build `ArchiveGrid.tsx` with URL-driven pagination via `useSearchParams`
+- [x] Build `FilterPanel.tsx`
+  - [x] Filter by manufacturer (searchable select dropdown)
+  - [x] Purchasable toggle (switch)
+  - [ ] Filter by piece types present – needs `availablePieceTypes` denormalized field on LugSets (backlog)
+  - [ ] Active year range slider (backlog)
+- [x] Build `SearchBar.tsx` with debounced search (300ms) via `useDebouncedCallback`
+- [x] Build `LugCard.tsx`
+  - [x] Cover image with aspect ratio + placeholder
+  - [x] Lug set name
+  - [x] Manufacturer name + city
+  - [x] Piece type badges (shown when piece data is provided)
+  - [x] Purchasable indicator badge
+- [x] Add pagination to archive grid (Mantine Pagination)
+- [x] Mobile responsive layout (`SimpleGrid` responsive cols, sidebar hidden on mobile)
 
 ## Phase 3: 3D Viewer Infrastructure
 
-- [x] Create `lib/viewer-store.ts` (Zustand — extract and extend from `split.jsx`)
+- [x] Create `app/lib/viewer-store.ts` (Zustand — moved to app/lib, typed)
 - [ ] Build `LugModel.tsx` — format-aware loader
   - [ ] GLTF/GLB via `useGLTF` from @react-three/drei
   - [ ] OBJ via `useLoader(OBJLoader, url)` from @react-three/fiber

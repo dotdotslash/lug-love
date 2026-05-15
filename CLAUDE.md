@@ -70,10 +70,10 @@ lug-love/
 │       │       └── CrosshatchMaterial.tsx   # Material type 4: ink crosshatch shader
 │       │
 │       ├── archive/
-│       │   ├── ArchiveGrid.tsx       # Grid with URL-driven filter state
-│       │   ├── LugCard.tsx           # Individual lug card
-│       │   ├── FilterPanel.tsx       # Sidebar filters
-│       │   └── SearchBar.tsx         # Debounced search input
+│       │   ├── ArchiveGrid.tsx       # Paginated grid, page state via useSearchParams
+│       │   ├── LugCard.tsx           # Card: cover image, name, manufacturer, badges
+│       │   ├── FilterPanel.tsx       # Sidebar: manufacturer select, purchasable switch
+│       │   └── SearchBar.tsx         # Debounced 300ms search via useSearchParams
 │       │
 │       └── layout/
 │           ├── SiteHeader.tsx
@@ -92,10 +92,10 @@ lug-love/
 │       ├── LugPieces.ts
 │       └── Media.ts
 │
-├── lib/
-│   ├── payload-api.ts                # Typed fetch helpers for Payload REST API
-│   ├── viewer-store.ts               # Zustand store (extends split.js patterns)
-│   └── types.ts                      # Shared TypeScript types
+│   └── lib/
+│       ├── payload-api.ts            # Typed fetch helpers for Payload REST API
+│       ├── viewer-store.ts           # Zustand store (extends split.jsx patterns)
+│       └── types.ts                  # Shared TypeScript types
 │
 ├── public/
 │   └── models/                       # Sample dev models (existing GLTF files)
