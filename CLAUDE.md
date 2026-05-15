@@ -363,7 +363,7 @@ type ViewDirection = 'Top' | 'Bottom' | 'Left' | 'Right' | 'Front' | 'Back'
 
 ## Existing Code to Reuse
 
-`app/components/split.js` is the foundation for `OrthoViewer.tsx`:
+`app/components/split.jsx` is the foundation for `OrthoViewer.tsx`:
 
 - The `positions` map (`{ Top: [0,10,0], Bottom: [0,-10,0], ... }`) maps directly to ortho camera positions
 - The `useStore` Zustand pattern becomes `viewer-store.ts`

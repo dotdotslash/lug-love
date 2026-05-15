@@ -2,29 +2,31 @@
 
 ## Phase 1: Foundation
 
-- [ ] Migrate from Next.js to Remix
-  - [ ] Initialize Remix project (keep existing `public/models/` and component code)
-  - [ ] Move `app/components/split.js` into new Remix component structure
-  - [ ] Update `package.json` with Remix deps, remove Next.js
-  - [ ] Configure Tailwind for Remix
-  - [ ] Upgrade Mantine from v6 → v7
-- [ ] Set up PostgreSQL via Docker Compose (`docker-compose.yml`)
-- [ ] Install and configure Payload CMS v3
-  - [ ] Add standalone Express server (`payload/server.ts`)
-  - [ ] Create `payload/payload.config.ts`
-  - [ ] Define Media collection with accepted MIME types (images, OBJ, GLTF, HDR)
-  - [ ] Define Users collection (admin-only, no public registration)
-  - [ ] Define Manufacturers collection
-  - [ ] Define People collection
-  - [ ] Define Workshops collection (with HDR upload field)
-  - [ ] Define LugSets collection
-  - [ ] Define LugPieces collection (pieceType enum, model3d upload, dimensions JSON, angles group)
-  - [ ] Run `payload generate:types` and commit generated types
-  - [ ] Seed first admin user
-- [ ] Create `lib/payload-api.ts` with typed fetch helpers
-- [ ] Create `lib/types.ts` with shared TypeScript types (LugSet, LugPiece, dimension types)
-- [ ] Create `.env.example` with all required environment variables
-- [ ] Verify Payload admin UI loads at `/admin` on port 3001
+- [x] Migrate from Next.js to Remix
+  - [x] Initialize Remix project (keep existing `public/models/` and component code)
+  - [x] Move `app/components/split.jsx` into new Remix component structure
+  - [x] Update `package.json` with Remix deps, remove Next.js
+  - [x] Configure Tailwind for Remix
+  - [x] Upgrade Mantine from v6 → v7
+- [x] Set up PostgreSQL via Docker Compose (`docker-compose.yml`)
+- [x] Install and configure Payload CMS v3
+  - [x] Add standalone Express server (`payload/server.ts`)
+  - [x] Create `payload/payload.config.ts`
+  - [x] Define Media collection with accepted MIME types (images, OBJ, GLTF, HDR)
+  - [x] Define Users collection (admin-only, no public registration)
+  - [x] Define Manufacturers collection
+  - [x] Define People collection
+  - [x] Define Workshops collection (with HDR upload field)
+  - [x] Define LugSets collection
+  - [x] Define LugPieces collection (pieceType enum, model3d upload, dimensions JSON, angles group)
+  - [ ] Run `payload generate:types` and commit generated types (requires DB)
+  - [ ] Seed first admin user (requires DB)
+- [x] Create `lib/payload-api.ts` with typed fetch helpers
+- [x] Create `lib/types.ts` with shared TypeScript types (LugSet, LugPiece, dimension types)
+- [x] Create `lib/viewer-store.ts` Zustand store
+- [x] Create `.env.example` with all required environment variables
+- [x] Create `nginx.conf.example`
+- [ ] Verify Payload admin UI loads at `/admin` on port 3001 (requires DB + running server)
 
 ## Phase 2: Archive Page
 
@@ -46,11 +48,7 @@
 
 ## Phase 3: 3D Viewer Infrastructure
 
-- [ ] Create `lib/viewer-store.ts` (Zustand — extract and extend from `split.js`)
-  - [ ] `viewerMode: 'perspective' | 'ortho'`
-  - [ ] `materialType: 'photoscan' | 'metal' | 'outline' | 'crosshatch'`
-  - [ ] `showTexture`, `showWireframe`, `showAngleLines` boolean toggles
-  - [ ] Ortho view directions: `top`, `middle`, `bottom` + `setPanelView`
+- [x] Create `lib/viewer-store.ts` (Zustand — extract and extend from `split.jsx`)
 - [ ] Build `LugModel.tsx` — format-aware loader
   - [ ] GLTF/GLB via `useGLTF` from @react-three/drei
   - [ ] OBJ via `useLoader(OBJLoader, url)` from @react-three/fiber
@@ -65,7 +63,7 @@
   - [ ] Toggle HDRI from workshop scan using `<Environment files={url} />`
   - [ ] `LugModel` centered with `<Center>`
   - [ ] `AccumulativeShadows` + `RandomizedLight`
-- [ ] Build `OrthoViewer.tsx` (Mode B — evolve from `split.js`)
+- [ ] Build `OrthoViewer.tsx` (Mode B — evolve from `split.jsx`)
   - [ ] Migrate JS → TypeScript
   - [ ] Three `<View>` portals: Side Profile, Top Down, Bottom Up
   - [ ] Shared `THREE.Matrix4` for synchronized transforms
@@ -122,21 +120,18 @@
   - [ ] Ad slot IDs from environment variables
 - [ ] Build `SiteFooter.tsx`
 - [ ] Wire root layout in `app/root.tsx`
-  - [ ] MantineProvider
-  - [ ] Tailwind global CSS
+  - [x] MantineProvider
+  - [x] Tailwind global CSS
   - [ ] `SiteHeader` with `AdBanner`
   - [ ] `SiteFooter`
 
 ## Phase 6: Production & Self-Hosting
 
-- [ ] Write `nginx.conf.example`
-  - [ ] Proxy `/admin` and `/api` → Payload (port 3001)
-  - [ ] Proxy `/` → Remix (port 3000)
-  - [ ] Serve `/media` as static files with long cache headers
+- [x] Write `nginx.conf.example`
 - [ ] Write systemd service files
   - [ ] `luglove-remix.service`
   - [ ] `luglove-payload.service`
-- [ ] Add `docker-compose.yml` for PostgreSQL
+- [x] Add `docker-compose.yml` for PostgreSQL
 - [ ] Document HTTPS setup with Certbot in README
 - [ ] Test production build (`npm run build && npm run start` for both servers)
 - [ ] Verify media file uploads and serving in production

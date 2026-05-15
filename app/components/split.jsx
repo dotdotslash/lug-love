@@ -1,4 +1,3 @@
-'use client'
 import styles from "./split.module.css"
 import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
