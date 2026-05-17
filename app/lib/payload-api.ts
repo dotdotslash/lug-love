@@ -74,8 +74,9 @@ export async function getLugSets(params?: {
 }
 
 export async function getLugSetBySlug(slug: string) {
+  // depth=3 to populate: designer → workshop → hdriScan (MediaFile)
   const res = await payloadFetch<PayloadListResponse<LugSet>>(
-    `/lug-sets?where[slug][equals]=${encodeURIComponent(slug)}&depth=2&limit=1`
+    `/lug-sets?where[slug][equals]=${encodeURIComponent(slug)}&depth=3&limit=1`
   );
   return res.docs[0] ?? null;
 }

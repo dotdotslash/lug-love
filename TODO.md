@@ -50,41 +50,42 @@
 ## Phase 3: 3D Viewer Infrastructure
 
 - [x] Create `app/lib/viewer-store.ts` (Zustand — moved to app/lib, typed)
-- [ ] Build `LugModel.tsx` — format-aware loader
-  - [ ] GLTF/GLB via `useGLTF` from @react-three/drei
-  - [ ] OBJ via `useLoader(OBJLoader, url)` from @react-three/fiber
-  - [ ] Detect format from file extension in URL
-- [ ] Build `LugViewer.tsx` — mode switcher wrapper (client-only)
-  - [ ] `<ClientOnly>` wrapper for SSR safety in Remix
-  - [ ] Switch between `PerspectiveViewer` and `OrthoViewer` based on store state
-- [ ] Build `PerspectiveViewer.tsx` (Mode A)
-  - [ ] Single Canvas with PerspectiveCamera
-  - [ ] OrbitControls
-  - [ ] `<Environment>` preset (city) as default background
-  - [ ] Toggle HDRI from workshop scan using `<Environment files={url} />`
-  - [ ] `LugModel` centered with `<Center>`
-  - [ ] `AccumulativeShadows` + `RandomizedLight`
-- [ ] Build `OrthoViewer.tsx` (Mode B — evolve from `split.jsx`)
-  - [ ] Migrate JS → TypeScript
-  - [ ] Three `<View>` portals: Side Profile, Top Down, Bottom Up
-  - [ ] Shared `THREE.Matrix4` for synchronized transforms
-  - [ ] `OrthographicCamera` + `MapControls` per viewport
-  - [ ] Preserve CSS grid layout from `split.module.css`
-- [ ] Build `ViewerControls.tsx` panel
-  - [ ] Mode toggle (Perspective / Ortho)
-  - [ ] Material selector (4 buttons)
-  - [ ] Toggle: Texture, Wireframe, Angle Lines
-  - [ ] Ortho view direction dropdowns (Top/Bottom/Left/Right/Front/Back per panel)
-- [ ] Build `ViewerSidePanel.tsx`
-  - [ ] Manufacturer name + logo
-  - [ ] Designer name + social link
-  - [ ] Piece type selector tabs (if set has multiple pieces)
-  - [ ] Dimensions table for selected piece
-  - [ ] Purchase links (shown if `lugSet.purchasable`)
-  - [ ] Description (rich text render)
-- [ ] Build `lug.$slug.tsx` Remix route
-  - [ ] Loader: fetch lug set + pieces + manufacturer from Payload
-  - [ ] Pass data as props to `LugViewer`
+- [x] Build `LugModel.tsx` — format-aware loader
+  - [x] GLTF/GLB via `useGLTF` from @react-three/drei
+  - [x] OBJ via `useLoader(OBJLoader, url)` from @react-three/fiber
+  - [x] Detect format from file extension in URL
+- [x] Build `LugViewer.tsx` — mode switcher wrapper (client-only)
+  - [x] `<ClientOnly>` wrapper for SSR safety in Remix
+  - [x] Switch between `PerspectiveViewer` and `OrthoViewer` based on store state
+- [x] Build `PerspectiveViewer.tsx` (Mode A)
+  - [x] Single Canvas with PerspectiveCamera
+  - [x] OrbitControls
+  - [x] `<Environment>` preset (studio) as default background
+  - [x] Toggle HDRI from workshop scan using `<Environment files={url} />`
+  - [x] `LugModel` centered with `<Center>`
+  - [x] `AccumulativeShadows` + `RandomizedLight`
+- [x] Build `OrthoViewer.tsx` (Mode B — evolved from `split.jsx`)
+  - [x] Migrated JS → TypeScript
+  - [x] Three `<View>` portals: Side Profile, Top Down, Bottom Up
+  - [x] `OrthographicCamera` + `MapControls` per viewport (per-view camera from store direction)
+  - [x] CSS grid layout (3 rows, 1fr each)
+- [x] Build `AngleIndicators.tsx`
+  - [x] `<Line>` objects through lug center for `lugAngle` and `seatingAngle`
+  - [x] Toggled by `showAngleLines` store state
+- [x] Build `ViewerControls.tsx` panel
+  - [x] Mode toggle (Perspective / Ortho)
+  - [x] Material selector (4 options, Photo Scan disabled when no scan)
+  - [x] Toggle: Wireframe, Angle Lines, Texture
+- [x] Build `ViewerSidePanel.tsx`
+  - [x] Manufacturer name + logo
+  - [x] Designer name + social link
+  - [x] Piece type selector (SegmentedControl, if set has multiple pieces)
+  - [x] Dimensions table for selected piece
+  - [x] Angles display (lug angle, seating angle, notes)
+  - [x] Purchase links (shown if `lugSet.purchasable`)
+- [x] Build `lug.$slug.tsx` Remix route
+  - [x] Loader: fetch lug set (depth=3 for HDRI chain) + pieces from Payload
+  - [x] Pass data as props to `LugViewer` inside `<ClientOnly>`
 
 ## Phase 4: Material System
 
