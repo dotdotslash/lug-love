@@ -1,12 +1,11 @@
-import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import {
   Center,
   Environment,
   MapControls,
   OrthographicCamera,
+  View,
 } from "@react-three/drei";
-import { View } from "@react-three/drei";
 import { useRef, Suspense } from "react";
 import { LugModel } from "./LugModel";
 import { AngleIndicators } from "./AngleIndicators";
@@ -14,11 +13,19 @@ import { useViewerStore, VIEW_POSITIONS } from "~/lib/viewer-store";
 import type { LugPiece } from "~/lib/types";
 import styles from "./OrthoViewer.module.css";
 
+type ViewportKey = "top" | "middle" | "bottom";
+
+const VIEWPORTS: { which: ViewportKey; label: string }[] = [
+  { which: "top", label: "Side Profile" },
+  { which: "middle", label: "Top Down" },
+  { which: "bottom", label: "Bottom Up" },
+];
+
 type SceneProps = {
   piece: LugPiece;
   wireframe: boolean;
   showAngles: boolean;
-  which: "top" | "middle" | "bottom";
+  which: ViewportKey;
 };
 
 function OrthoScene({ piece, wireframe, showAngles, which }: SceneProps) {
@@ -29,11 +36,9 @@ function OrthoScene({ piece, wireframe, showAngles, which }: SceneProps) {
     <>
       <OrthographicCamera makeDefault position={position} zoom={80} near={0.1} far={1000} />
       <MapControls makeDefault screenSpacePanning enableRotate={false} />
-
       <ambientLight intensity={0.6} />
       <directionalLight position={[5, 8, 5]} intensity={0.8} />
       <Environment preset="studio" />
-
       <Center>
         <Suspense
           fallback={
@@ -46,7 +51,6 @@ function OrthoScene({ piece, wireframe, showAngles, which }: SceneProps) {
           <LugModel url={piece.model3d.url} wireframe={wireframe} />
         </Suspense>
       </Center>
-
       {showAngles && (
         <AngleIndicators
           lugAngle={piece.angles?.lugAngle}
@@ -61,17 +65,12 @@ type Props = {
   piece: LugPiece;
 };
 
-const VIEWPORT_LABELS: Record<"top" | "middle" | "bottom", string> = {
-  top: "Side Profile",
-  middle: "Top Down",
-  bottom: "Bottom Up",
-};
-
 export function OrthoViewer({ piece }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const view1 = useRef<HTMLDivElement>(null);
   const view2 = useRef<HTMLDivElement>(null);
   const view3 = useRef<HTMLDivElement>(null);
+  const viewRefs = [view1, view2, view3] as const;
 
   const { showWireframe, showAngleLines } = useViewerStore();
 
@@ -83,41 +82,26 @@ export function OrthoViewer({ piece }: Props) {
         eventSource={containerRef as React.RefObject<HTMLElement>}
         gl={{ antialias: true }}
       >
-        <View index={1} track={view1 as React.MutableRefObject<HTMLDivElement>}>
-          <OrthoScene
-            piece={piece}
-            wireframe={showWireframe}
-            showAngles={showAngleLines}
-            which="top"
-          />
-        </View>
-        <View index={2} track={view2 as React.MutableRefObject<HTMLDivElement>}>
-          <OrthoScene
-            piece={piece}
-            wireframe={showWireframe}
-            showAngles={showAngleLines}
-            which="middle"
-          />
-        </View>
-        <View index={3} track={view3 as React.MutableRefObject<HTMLDivElement>}>
-          <OrthoScene
-            piece={piece}
-            wireframe={showWireframe}
-            showAngles={showAngleLines}
-            which="bottom"
-          />
-        </View>
+        {VIEWPORTS.map((vp, i) => (
+          <View
+            key={vp.which}
+            index={i + 1}
+            track={viewRefs[i] as React.MutableRefObject<HTMLDivElement>}
+          >
+            <OrthoScene
+              piece={piece}
+              wireframe={showWireframe}
+              showAngles={showAngleLines}
+              which={vp.which}
+            />
+          </View>
+        ))}
       </Canvas>
-
-      <div className={styles.viewport} ref={view1}>
-        <span className={styles.label}>{VIEWPORT_LABELS.top}</span>
-      </div>
-      <div className={styles.viewport} ref={view2}>
-        <span className={styles.label}>{VIEWPORT_LABELS.middle}</span>
-      </div>
-      <div className={styles.viewport} ref={view3}>
-        <span className={styles.label}>{VIEWPORT_LABELS.bottom}</span>
-      </div>
+      {VIEWPORTS.map((vp, i) => (
+        <div key={vp.which} className={styles.viewport} ref={viewRefs[i]}>
+          <span className={styles.label}>{vp.label}</span>
+        </div>
+      ))}
     </div>
   );
 }

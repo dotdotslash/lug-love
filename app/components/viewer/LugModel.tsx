@@ -1,4 +1,4 @@
-import { useGLTF, Center } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { useMemo, useEffect } from "react";
@@ -26,39 +26,24 @@ function applyMaterial(root: THREE.Object3D, wireframe: boolean) {
   });
 }
 
-// ── GLTF / GLB ───────────────────────────────────────────────────────────────
-
 function GLTFModel({ url, wireframe }: { url: string; wireframe: boolean }) {
   const { scene } = useGLTF(url);
   const cloned = useMemo(() => scene.clone(true), [scene]);
-
-  useEffect(() => {
-    applyMaterial(cloned, wireframe);
-  }, [cloned, wireframe]);
-
+  useEffect(() => { applyMaterial(cloned, wireframe); }, [cloned, wireframe]);
   return <primitive object={cloned} />;
 }
-
-// ── OBJ ──────────────────────────────────────────────────────────────────────
 
 function OBJModel({ url, wireframe }: { url: string; wireframe: boolean }) {
-  // useLoader with OBJLoader returns a THREE.Group
   const obj = useLoader(OBJLoader, url) as THREE.Group;
   const cloned = useMemo(() => obj.clone(true), [obj]);
-
-  useEffect(() => {
-    applyMaterial(cloned, wireframe);
-  }, [cloned, wireframe]);
-
+  useEffect(() => { applyMaterial(cloned, wireframe); }, [cloned, wireframe]);
   return <primitive object={cloned} />;
 }
-
-// ── Format-aware wrapper ──────────────────────────────────────────────────────
 
 function getFormat(url: string): "gltf" | "obj" {
   const ext = url.split("?")[0].split(".").pop()?.toLowerCase();
   if (ext === "obj") return "obj";
-  return "gltf"; // default covers .gltf and .glb
+  return "gltf";
 }
 
 type Props = {

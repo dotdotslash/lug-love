@@ -1,14 +1,10 @@
 import { json, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { lazy, Suspense } from "react";
-import { Center, Loader } from "@mantine/core";
 import { ClientOnly } from "~/components/ClientOnly";
 import { getLugSetBySlug, getLugPiecesBySetId } from "~/lib/payload-api";
 import type { Person, Workshop, MediaFile, Manufacturer } from "~/lib/types";
-
-function isObj<T extends { id: string }>(v: T | string | undefined): v is T {
-  return typeof v === "object" && v !== null;
-}
+import { isPopulated } from "~/lib/types";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { slug } = params;
@@ -24,16 +20,14 @@ export async function loader({ params }: LoaderFunctionArgs) {
     throw new Response("No pieces found for this lug set", { status: 404 });
   }
 
-  // Resolve HDRI URL from the designer's workshop scan (depth=3 chain)
-  const designer = isObj<Person>(lugSet.designer as Person | string | undefined) ? lugSet.designer as Person : null;
-  const workshop = designer && isObj<Workshop>(designer.workshop) ? designer.workshop : null;
-  const hdriScan = workshop && isObj<MediaFile>(workshop.hdriScan) ? workshop.hdriScan : null;
-  const hdriUrl = hdriScan?.url ?? undefined;
-
-  // Narrow manufacturer for meta
-  const manufacturer = isObj<Manufacturer>(lugSet.manufacturer as Manufacturer | string | undefined)
-    ? lugSet.manufacturer as Manufacturer
-    : { name: "" };
+  // Resolve HDRI URL through the depth=3 chain: designer → workshop → hdriScan
+  const designer = isPopulated<Person>(lugSet.designer as Person | string | undefined)
+    ? (lugSet.designer as Person)
+    : null;
+  const workshop = designer && isPopulated<Workshop>(designer.workshop) ? designer.workshop : null;
+  const hdriUrl = workshop && isPopulated<MediaFile>(workshop.hdriScan)
+    ? workshop.hdriScan.url
+    : undefined;
 
   return json({ lugSet, pieces, hdriUrl });
 }
@@ -41,7 +35,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return [{ title: "Lug Not Found – Lug Love" }];
   const { lugSet } = data;
-  const mfr = isObj<Manufacturer>(lugSet.manufacturer as Manufacturer | string | undefined)
+  const mfr = isPopulated<Manufacturer>(lugSet.manufacturer as Manufacturer | string | undefined)
     ? (lugSet.manufacturer as Manufacturer).name
     : "";
   return [
@@ -54,22 +48,16 @@ const LugViewer = lazy(() =>
   import("~/components/viewer/LugViewer").then((m) => ({ default: m.LugViewer }))
 );
 
-function ViewerFallback() {
-  return (
-    <Center style={{ width: "100vw", height: "100vh", background: "#111" }}>
-      <Loader color="gray" size="sm" />
-    </Center>
-  );
-}
+const DARK_SCREEN = <div style={{ width: "100vw", height: "100vh", background: "#111" }} />;
 
 export default function LugPage() {
   const { lugSet, pieces, hdriUrl } = useLoaderData<typeof loader>();
 
   return (
     <div style={{ width: "100vw", height: "100vh", background: "#111", overflow: "hidden" }}>
-      <ClientOnly fallback={<ViewerFallback />}>
+      <ClientOnly fallback={DARK_SCREEN}>
         {() => (
-          <Suspense fallback={<ViewerFallback />}>
+          <Suspense fallback={DARK_SCREEN}>
             <LugViewer lugSet={lugSet} pieces={pieces} hdriUrl={hdriUrl} />
           </Suspense>
         )}

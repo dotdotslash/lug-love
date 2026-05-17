@@ -133,6 +133,12 @@ export type LugPiece = {
   angles?: LugAngles;
 };
 
+export function isPopulated<T extends { id: string }>(
+  v: T | string | undefined | null
+): v is T {
+  return typeof v === "object" && v !== null;
+}
+
 // Payload REST API pagination envelope
 export type PayloadListResponse<T> = {
   docs: T[];

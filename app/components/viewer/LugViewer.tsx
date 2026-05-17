@@ -12,7 +12,7 @@ const OrthoViewer = lazy(() =>
   import("./OrthoViewer").then((m) => ({ default: m.OrthoViewer }))
 );
 
-function ViewerFallback() {
+export function ViewerFallback() {
   return (
     <Center style={{ width: "100%", height: "100%", background: "#111" }}>
       <Loader color="gray" size="sm" />
@@ -29,22 +29,15 @@ type Props = {
 export function LugViewer({ lugSet, pieces, hdriUrl }: Props) {
   const [activePiece, setActivePiece] = useState<LugPiece>(pieces[0]);
   const viewerMode = useViewerStore((s) => s.viewerMode);
-
   const hasScan = Boolean(activePiece.textureScan?.url);
 
   return (
     <Group
       gap={0}
       align="stretch"
-      style={{
-        width: "100%",
-        height: "100%",
-        background: "#111",
-        overflow: "hidden",
-      }}
+      style={{ width: "100%", height: "100%", background: "#111", overflow: "hidden" }}
       wrap="nowrap"
     >
-      {/* 3D Canvas area */}
       <Box style={{ flex: 1, minWidth: 0, position: "relative" }}>
         <Suspense fallback={<ViewerFallback />}>
           {viewerMode === "perspective" ? (
@@ -55,7 +48,6 @@ export function LugViewer({ lugSet, pieces, hdriUrl }: Props) {
         </Suspense>
       </Box>
 
-      {/* Right column: controls + side panel */}
       <Box
         style={{
           width: 220,

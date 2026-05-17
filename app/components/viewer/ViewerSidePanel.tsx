@@ -13,11 +13,7 @@ import {
 } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import type { LugSet, LugPiece, Manufacturer, Person } from "~/lib/types";
-import { PIECE_TYPE_LABELS } from "~/lib/types";
-
-function isObj<T extends { id: string }>(v: T | string | undefined): v is T {
-  return typeof v === "object" && v !== null;
-}
+import { PIECE_TYPE_LABELS, isPopulated } from "~/lib/types";
 
 function DimensionsTable({ dimensions }: { dimensions: Record<string, unknown> }) {
   const rows = Object.entries(dimensions).map(([key, value]) => {
@@ -27,12 +23,8 @@ function DimensionsTable({ dimensions }: { dimensions: Record<string, unknown> }
       .trim();
     return (
       <Table.Tr key={key}>
-        <Table.Td>
-          <Text size="xs" c="dimmed">{label}</Text>
-        </Table.Td>
-        <Table.Td>
-          <Text size="xs" ff="monospace">{String(value)}</Text>
-        </Table.Td>
+        <Table.Td><Text size="xs" c="dimmed">{label}</Text></Table.Td>
+        <Table.Td><Text size="xs" ff="monospace">{String(value)}</Text></Table.Td>
       </Table.Tr>
     );
   });
@@ -44,6 +36,8 @@ function DimensionsTable({ dimensions }: { dimensions: Record<string, unknown> }
   );
 }
 
+const DIVIDER = <Divider color="#333" />;
+
 type Props = {
   lugSet: LugSet;
   pieces: LugPiece[];
@@ -52,16 +46,15 @@ type Props = {
 };
 
 export function ViewerSidePanel({ lugSet, pieces, activePiece, onSelectPiece }: Props) {
-  const manufacturer = isObj<Manufacturer>(lugSet.manufacturer as Manufacturer | string | undefined)
+  const manufacturer = isPopulated<Manufacturer>(lugSet.manufacturer as Manufacturer | string | undefined)
     ? lugSet.manufacturer as Manufacturer
     : null;
-  const designer = isObj<Person>(lugSet.designer as Person | string | undefined)
+  const designer = isPopulated<Person>(lugSet.designer as Person | string | undefined)
     ? lugSet.designer as Person
     : null;
 
   return (
     <Stack gap="md" p="md" style={{ overflowY: "auto", height: "100%" }}>
-      {/* Manufacturer */}
       {manufacturer && (
         <Box>
           {manufacturer.logo && (
@@ -84,10 +77,9 @@ export function ViewerSidePanel({ lugSet, pieces, activePiece, onSelectPiece }: 
         </Box>
       )}
 
-      {/* Designer */}
       {designer && (
         <>
-          <Divider color="#333" />
+          {DIVIDER}
           <Box>
             <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4} style={{ letterSpacing: "0.05em" }}>
               Designer
@@ -112,10 +104,9 @@ export function ViewerSidePanel({ lugSet, pieces, activePiece, onSelectPiece }: 
         </>
       )}
 
-      {/* Piece selector */}
       {pieces.length > 1 && (
         <>
-          <Divider color="#333" />
+          {DIVIDER}
           <Box>
             <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={6} style={{ letterSpacing: "0.05em" }}>
               Piece
@@ -133,19 +124,15 @@ export function ViewerSidePanel({ lugSet, pieces, activePiece, onSelectPiece }: 
                 value: p.id,
                 label: PIECE_TYPE_LABELS[p.pieceType],
               }))}
-              styles={{
-                root: { background: "#111" },
-                label: { color: "#ccc", fontSize: "11px" },
-              }}
+              styles={{ root: { background: "#111" }, label: { color: "#ccc", fontSize: "11px" } }}
             />
           </Box>
         </>
       )}
 
-      {/* Dimensions */}
       {activePiece.dimensions && Object.keys(activePiece.dimensions).length > 0 && (
         <>
-          <Divider color="#333" />
+          {DIVIDER}
           <Box>
             <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={6} style={{ letterSpacing: "0.05em" }}>
               Dimensions
@@ -155,10 +142,9 @@ export function ViewerSidePanel({ lugSet, pieces, activePiece, onSelectPiece }: 
         </>
       )}
 
-      {/* Angles */}
       {activePiece.angles && (
         <>
-          <Divider color="#333" />
+          {DIVIDER}
           <Box>
             <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={6} style={{ letterSpacing: "0.05em" }}>
               Angles
@@ -184,10 +170,9 @@ export function ViewerSidePanel({ lugSet, pieces, activePiece, onSelectPiece }: 
         </>
       )}
 
-      {/* Purchase links */}
       {lugSet.purchasable && lugSet.purchaseUrls && lugSet.purchaseUrls.length > 0 && (
         <>
-          <Divider color="#333" />
+          {DIVIDER}
           <Box>
             <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={6} style={{ letterSpacing: "0.05em" }}>
               Buy
@@ -213,8 +198,7 @@ export function ViewerSidePanel({ lugSet, pieces, activePiece, onSelectPiece }: 
         </>
       )}
 
-      {/* Piece type badge */}
-      <Divider color="#333" />
+      {DIVIDER}
       <Badge size="xs" variant="outline" color="gray">
         {PIECE_TYPE_LABELS[activePiece.pieceType]}
       </Badge>

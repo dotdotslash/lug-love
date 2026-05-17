@@ -1,16 +1,12 @@
 import { Card, Text, Badge, Group, Stack, AspectRatio, Box } from "@mantine/core";
 import { Link } from "@remix-run/react";
 import type { LugSet, Manufacturer, PieceType } from "~/lib/types";
-import { PIECE_TYPE_LABELS } from "~/lib/types";
+import { PIECE_TYPE_LABELS, isPopulated } from "~/lib/types";
 
 type Props = {
   lugSet: LugSet;
   pieceTypes?: PieceType[];
 };
-
-function isManufacturer(m: Manufacturer | string): m is Manufacturer {
-  return typeof m === "object" && m !== null;
-}
 
 const PIECE_COLORS: Record<PieceType, string> = {
   headtube_top: "blue",
@@ -23,9 +19,7 @@ const PIECE_COLORS: Record<PieceType, string> = {
 };
 
 export function LugCard({ lugSet, pieceTypes = [] }: Props) {
-  const manufacturer = isManufacturer(lugSet.manufacturer)
-    ? lugSet.manufacturer
-    : null;
+  const manufacturer = isPopulated<Manufacturer>(lugSet.manufacturer) ? lugSet.manufacturer : null;
 
   const coverUrl = lugSet.coverImage?.url;
   const coverAlt = lugSet.coverImage?.alt ?? lugSet.name;

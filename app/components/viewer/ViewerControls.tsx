@@ -3,7 +3,6 @@ import {
   Stack,
   Switch,
   Text,
-  Group,
   Paper,
   Divider,
   Select,
@@ -17,6 +16,14 @@ const MATERIAL_OPTIONS: { value: MaterialType; label: string }[] = [
   { value: "outline", label: "Outline" },
   { value: "crosshatch", label: "Crosshatch" },
 ];
+
+const SECTION_LABEL_PROPS = {
+  size: "xs" as const,
+  c: "dimmed" as const,
+  tt: "uppercase" as const,
+  fw: 600,
+  style: { letterSpacing: "0.05em" },
+};
 
 type Props = {
   hasScan: boolean;
@@ -39,9 +46,7 @@ export function ViewerControls({ hasScan }: Props) {
   return (
     <Paper p="sm" withBorder style={{ background: "#1a1a1a", borderColor: "#333" }}>
       <Stack gap="xs">
-        <Text size="xs" c="dimmed" tt="uppercase" fw={600} style={{ letterSpacing: "0.05em" }}>
-          View Mode
-        </Text>
+        <Text {...SECTION_LABEL_PROPS}>View Mode</Text>
         <SegmentedControl
           size="xs"
           value={viewerMode}
@@ -50,17 +55,12 @@ export function ViewerControls({ hasScan }: Props) {
             { label: "Perspective", value: "perspective" },
             { label: "Ortho", value: "ortho" },
           ]}
-          styles={{
-            root: { background: "#111" },
-            label: { color: "#ccc" },
-          }}
+          styles={{ root: { background: "#111" }, label: { color: "#ccc" } }}
         />
 
         <Divider color="#333" />
 
-        <Text size="xs" c="dimmed" tt="uppercase" fw={600} style={{ letterSpacing: "0.05em" }}>
-          Material
-        </Text>
+        <Text {...SECTION_LABEL_PROPS}>Material</Text>
         <Select
           size="xs"
           value={materialType}
@@ -78,36 +78,28 @@ export function ViewerControls({ hasScan }: Props) {
 
         <Divider color="#333" />
 
-        <Text size="xs" c="dimmed" tt="uppercase" fw={600} style={{ letterSpacing: "0.05em" }}>
-          Overlays
-        </Text>
-        <Group gap="xs">
-          <Switch
-            size="xs"
-            checked={showTexture}
-            onChange={toggleTexture}
-            label={<Text size="xs" c="dimmed">Texture</Text>}
-            styles={{ track: { background: showTexture ? "#4fc3f7" : "#333" } }}
-          />
-        </Group>
-        <Group gap="xs">
-          <Switch
-            size="xs"
-            checked={showWireframe}
-            onChange={toggleWireframe}
-            label={<Text size="xs" c="dimmed">Wireframe</Text>}
-            styles={{ track: { background: showWireframe ? "#4fc3f7" : "#333" } }}
-          />
-        </Group>
-        <Group gap="xs">
-          <Switch
-            size="xs"
-            checked={showAngleLines}
-            onChange={toggleAngleLines}
-            label={<Text size="xs" c="dimmed">Angle Lines</Text>}
-            styles={{ track: { background: showAngleLines ? "#ef4444" : "#333" } }}
-          />
-        </Group>
+        <Text {...SECTION_LABEL_PROPS}>Overlays</Text>
+        <Switch
+          size="xs"
+          checked={showTexture}
+          onChange={toggleTexture}
+          color="cyan"
+          label={<Text size="xs" c="dimmed">Texture</Text>}
+        />
+        <Switch
+          size="xs"
+          checked={showWireframe}
+          onChange={toggleWireframe}
+          color="cyan"
+          label={<Text size="xs" c="dimmed">Wireframe</Text>}
+        />
+        <Switch
+          size="xs"
+          checked={showAngleLines}
+          onChange={toggleAngleLines}
+          color="red"
+          label={<Text size="xs" c="dimmed">Angle Lines</Text>}
+        />
       </Stack>
     </Paper>
   );
