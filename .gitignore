@@ -1,35 +1,28 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies
+node_modules
+payload/node_modules
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
+# Remix build output
 /build
 
-# misc
+# Payload CMS build output
+/payload/dist
+/payload/payload-types.ts
+
+# Uploaded media files (managed by Payload)
+/media
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Misc
 .DS_Store
 *.pem
-
-# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
-
-# vercel
-.vercel
-
-# typescript
+# TypeScript
 *.tsbuildinfo
-next-env.d.ts

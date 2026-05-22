@@ -2,90 +2,90 @@
 
 ## Phase 1: Foundation
 
-- [ ] Migrate from Next.js to Remix
-  - [ ] Initialize Remix project (keep existing `public/models/` and component code)
-  - [ ] Move `app/components/split.js` into new Remix component structure
-  - [ ] Update `package.json` with Remix deps, remove Next.js
-  - [ ] Configure Tailwind for Remix
-  - [ ] Upgrade Mantine from v6 → v7
-- [ ] Set up PostgreSQL via Docker Compose (`docker-compose.yml`)
-- [ ] Install and configure Payload CMS v3
-  - [ ] Add standalone Express server (`payload/server.ts`)
-  - [ ] Create `payload/payload.config.ts`
-  - [ ] Define Media collection with accepted MIME types (images, OBJ, GLTF, HDR)
-  - [ ] Define Users collection (admin-only, no public registration)
-  - [ ] Define Manufacturers collection
-  - [ ] Define People collection
-  - [ ] Define Workshops collection (with HDR upload field)
-  - [ ] Define LugSets collection
-  - [ ] Define LugPieces collection (pieceType enum, model3d upload, dimensions JSON, angles group)
-  - [ ] Run `payload generate:types` and commit generated types
-  - [ ] Seed first admin user
-- [ ] Create `lib/payload-api.ts` with typed fetch helpers
-- [ ] Create `lib/types.ts` with shared TypeScript types (LugSet, LugPiece, dimension types)
-- [ ] Create `.env.example` with all required environment variables
-- [ ] Verify Payload admin UI loads at `/admin` on port 3001
+- [x] Migrate from Next.js to Remix
+  - [x] Initialize Remix project (keep existing `public/models/` and component code)
+  - [x] Move `app/components/split.jsx` into new Remix component structure
+  - [x] Update `package.json` with Remix deps, remove Next.js
+  - [x] Configure Tailwind for Remix
+  - [x] Upgrade Mantine from v6 → v7
+- [x] Set up PostgreSQL via Docker Compose (`docker-compose.yml`)
+- [x] Install and configure Payload CMS v3
+  - [x] Add standalone Express server (`payload/server.ts`)
+  - [x] Create `payload/payload.config.ts`
+  - [x] Define Media collection with accepted MIME types (images, OBJ, GLTF, HDR)
+  - [x] Define Users collection (admin-only, no public registration)
+  - [x] Define Manufacturers collection
+  - [x] Define People collection
+  - [x] Define Workshops collection (with HDR upload field)
+  - [x] Define LugSets collection
+  - [x] Define LugPieces collection (pieceType enum, model3d upload, dimensions JSON, angles group)
+  - [ ] Run `payload generate:types` and commit generated types (requires DB)
+  - [ ] Seed first admin user (requires DB)
+- [x] Create `lib/payload-api.ts` with typed fetch helpers
+- [x] Create `lib/types.ts` with shared TypeScript types (LugSet, LugPiece, dimension types)
+- [x] Create `lib/viewer-store.ts` Zustand store
+- [x] Create `.env.example` with all required environment variables
+- [x] Create `nginx.conf.example`
+- [ ] Verify Payload admin UI loads at `/admin` on port 3001 (requires DB + running server)
 
 ## Phase 2: Archive Page
 
-- [ ] Build `app/routes/archive.tsx` Remix route with loader (server-side fetch from Payload)
-- [ ] Build `ArchiveGrid.tsx` client component with URL-driven filter state (`useSearchParams`)
-- [ ] Build `FilterPanel.tsx`
-  - [ ] Filter by piece types present (multi-select checkboxes)
-  - [ ] Filter by manufacturer (select dropdown)
-  - [ ] Purchasable toggle
-  - [ ] Active year range slider
-- [ ] Build `SearchBar.tsx` with debounced search (300ms)
-- [ ] Build `LugCard.tsx`
-  - [ ] Cover image
-  - [ ] Lug set name
-  - [ ] Manufacturer name
-  - [ ] Piece type indicator icons
-- [ ] Add pagination to archive grid
-- [ ] Mobile responsive layout for archive page
+- [x] Build `app/routes/archive.tsx` Remix route with loader (server-side fetch from Payload)
+- [x] Build `ArchiveGrid.tsx` with URL-driven pagination via `useSearchParams`
+- [x] Build `FilterPanel.tsx`
+  - [x] Filter by manufacturer (searchable select dropdown)
+  - [x] Purchasable toggle (switch)
+  - [ ] Filter by piece types present – needs `availablePieceTypes` denormalized field on LugSets (backlog)
+  - [ ] Active year range slider (backlog)
+- [x] Build `SearchBar.tsx` with debounced search (300ms) via `useDebouncedCallback`
+- [x] Build `LugCard.tsx`
+  - [x] Cover image with aspect ratio + placeholder
+  - [x] Lug set name
+  - [x] Manufacturer name + city
+  - [x] Piece type badges (shown when piece data is provided)
+  - [x] Purchasable indicator badge
+- [x] Add pagination to archive grid (Mantine Pagination)
+- [x] Mobile responsive layout (`SimpleGrid` responsive cols, sidebar hidden on mobile)
 
 ## Phase 3: 3D Viewer Infrastructure
 
-- [ ] Create `lib/viewer-store.ts` (Zustand — extract and extend from `split.js`)
-  - [ ] `viewerMode: 'perspective' | 'ortho'`
-  - [ ] `materialType: 'photoscan' | 'metal' | 'outline' | 'crosshatch'`
-  - [ ] `showTexture`, `showWireframe`, `showAngleLines` boolean toggles
-  - [ ] Ortho view directions: `top`, `middle`, `bottom` + `setPanelView`
-- [ ] Build `LugModel.tsx` — format-aware loader
-  - [ ] GLTF/GLB via `useGLTF` from @react-three/drei
-  - [ ] OBJ via `useLoader(OBJLoader, url)` from @react-three/fiber
-  - [ ] Detect format from file extension in URL
-- [ ] Build `LugViewer.tsx` — mode switcher wrapper (client-only)
-  - [ ] `<ClientOnly>` wrapper for SSR safety in Remix
-  - [ ] Switch between `PerspectiveViewer` and `OrthoViewer` based on store state
-- [ ] Build `PerspectiveViewer.tsx` (Mode A)
-  - [ ] Single Canvas with PerspectiveCamera
-  - [ ] OrbitControls
-  - [ ] `<Environment>` preset (city) as default background
-  - [ ] Toggle HDRI from workshop scan using `<Environment files={url} />`
-  - [ ] `LugModel` centered with `<Center>`
-  - [ ] `AccumulativeShadows` + `RandomizedLight`
-- [ ] Build `OrthoViewer.tsx` (Mode B — evolve from `split.js`)
-  - [ ] Migrate JS → TypeScript
-  - [ ] Three `<View>` portals: Side Profile, Top Down, Bottom Up
-  - [ ] Shared `THREE.Matrix4` for synchronized transforms
-  - [ ] `OrthographicCamera` + `MapControls` per viewport
-  - [ ] Preserve CSS grid layout from `split.module.css`
-- [ ] Build `ViewerControls.tsx` panel
-  - [ ] Mode toggle (Perspective / Ortho)
-  - [ ] Material selector (4 buttons)
-  - [ ] Toggle: Texture, Wireframe, Angle Lines
-  - [ ] Ortho view direction dropdowns (Top/Bottom/Left/Right/Front/Back per panel)
-- [ ] Build `ViewerSidePanel.tsx`
-  - [ ] Manufacturer name + logo
-  - [ ] Designer name + social link
-  - [ ] Piece type selector tabs (if set has multiple pieces)
-  - [ ] Dimensions table for selected piece
-  - [ ] Purchase links (shown if `lugSet.purchasable`)
-  - [ ] Description (rich text render)
-- [ ] Build `lug.$slug.tsx` Remix route
-  - [ ] Loader: fetch lug set + pieces + manufacturer from Payload
-  - [ ] Pass data as props to `LugViewer`
+- [x] Create `app/lib/viewer-store.ts` (Zustand — moved to app/lib, typed)
+- [x] Build `LugModel.tsx` — format-aware loader
+  - [x] GLTF/GLB via `useGLTF` from @react-three/drei
+  - [x] OBJ via `useLoader(OBJLoader, url)` from @react-three/fiber
+  - [x] Detect format from file extension in URL
+- [x] Build `LugViewer.tsx` — mode switcher wrapper (client-only)
+  - [x] `<ClientOnly>` wrapper for SSR safety in Remix
+  - [x] Switch between `PerspectiveViewer` and `OrthoViewer` based on store state
+- [x] Build `PerspectiveViewer.tsx` (Mode A)
+  - [x] Single Canvas with PerspectiveCamera
+  - [x] OrbitControls
+  - [x] `<Environment>` preset (studio) as default background
+  - [x] Toggle HDRI from workshop scan using `<Environment files={url} />`
+  - [x] `LugModel` centered with `<Center>`
+  - [x] `AccumulativeShadows` + `RandomizedLight`
+- [x] Build `OrthoViewer.tsx` (Mode B — evolved from `split.jsx`)
+  - [x] Migrated JS → TypeScript
+  - [x] Three `<View>` portals: Side Profile, Top Down, Bottom Up
+  - [x] `OrthographicCamera` + `MapControls` per viewport (per-view camera from store direction)
+  - [x] CSS grid layout (3 rows, 1fr each)
+- [x] Build `AngleIndicators.tsx`
+  - [x] `<Line>` objects through lug center for `lugAngle` and `seatingAngle`
+  - [x] Toggled by `showAngleLines` store state
+- [x] Build `ViewerControls.tsx` panel
+  - [x] Mode toggle (Perspective / Ortho)
+  - [x] Material selector (4 options, Photo Scan disabled when no scan)
+  - [x] Toggle: Wireframe, Angle Lines, Texture
+- [x] Build `ViewerSidePanel.tsx`
+  - [x] Manufacturer name + logo
+  - [x] Designer name + social link
+  - [x] Piece type selector (SegmentedControl, if set has multiple pieces)
+  - [x] Dimensions table for selected piece
+  - [x] Angles display (lug angle, seating angle, notes)
+  - [x] Purchase links (shown if `lugSet.purchasable`)
+- [x] Build `lug.$slug.tsx` Remix route
+  - [x] Loader: fetch lug set (depth=3 for HDRI chain) + pieces from Payload
+  - [x] Pass data as props to `LugViewer` inside `<ClientOnly>`
 
 ## Phase 4: Material System
 
@@ -122,21 +122,18 @@
   - [ ] Ad slot IDs from environment variables
 - [ ] Build `SiteFooter.tsx`
 - [ ] Wire root layout in `app/root.tsx`
-  - [ ] MantineProvider
-  - [ ] Tailwind global CSS
+  - [x] MantineProvider
+  - [x] Tailwind global CSS
   - [ ] `SiteHeader` with `AdBanner`
   - [ ] `SiteFooter`
 
 ## Phase 6: Production & Self-Hosting
 
-- [ ] Write `nginx.conf.example`
-  - [ ] Proxy `/admin` and `/api` → Payload (port 3001)
-  - [ ] Proxy `/` → Remix (port 3000)
-  - [ ] Serve `/media` as static files with long cache headers
+- [x] Write `nginx.conf.example`
 - [ ] Write systemd service files
   - [ ] `luglove-remix.service`
   - [ ] `luglove-payload.service`
-- [ ] Add `docker-compose.yml` for PostgreSQL
+- [x] Add `docker-compose.yml` for PostgreSQL
 - [ ] Document HTTPS setup with Certbot in README
 - [ ] Test production build (`npm run build && npm run start` for both servers)
 - [ ] Verify media file uploads and serving in production
